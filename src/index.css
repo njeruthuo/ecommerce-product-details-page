@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+#nav-right #cart {
+  @apply h-6 w-6 hover:cursor-pointer;
+}
+
+#nav-right #profile {
+  @apply h-10 w-10 hover:cursor-pointer hover:border-Orange border-2 rounded-full;
+}
+
+#navlinks p{
+  @apply hover:hover:border-Orange hover:border-b-2 py-8
+}
+
+.crossed-text{
+  text-decoration: line-through;
+}
