@@ -71,7 +71,7 @@ const Navbar = () => {
       </div>
 
       {mobile && (
-        <div className="absolute bg-white top-28 left-0 sm:hidden z-40">
+        <div className="absolute bg-white top-24 h-full left-0 sm:hidden z-40 w-2/3">
           <div className="flex sm:hidden flex-col space-y-8 text-DarkGrayishBlue m-8">
             <p>
               <a onClick={() => setMobile((prev) => !prev)} href="#">

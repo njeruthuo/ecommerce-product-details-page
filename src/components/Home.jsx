@@ -8,9 +8,9 @@ import { shoes } from "../utils/data";
 import useCart from "../utils/useCart";
 
 const Home = () => {
+  const { setCart } = useCart();
   const [next, setNext] = useState(1);
   const [quantity, setQuantity] = useState(0);
-  const { setCart } = useCart();
 
   function handleNext() {
     if (next >= 3) {
@@ -35,7 +35,7 @@ const Home = () => {
     setQuantity((prev) => prev - 1);
   }
 
-  const img1 = shoes.find((shoe) => shoe.id === next)?.img?.img1;
+  let img1 = shoes.find((shoe) => shoe.id === next)?.img?.img1;
 
   function handleAddToCart() {
     const obj = shoes.find((shoe) => shoe.id === next);
@@ -57,25 +57,50 @@ const Home = () => {
     }
   }
 
+  function switchShoe(id) {
+    let img1 = shoes.find((shoe) => shoe.id === id)?.img?.img1;
+    console.log(img1);
+    return img1;
+  }
+
   return (
-    <div>
-      <div className="relative">
-        <img className="h-80 w-[100%]" src={img1} alt="" />
+    <div className="flex sm:mt-8 flex-col sm:flex-row">
+      <div className="relative sm:w-1/2 flex flex-col justify-center">
+        <img
+          className="sm:h-96 h-80 w-[100%] sm:w-auto rounded-xl"
+          src={img1}
+          alt=""
+        />
         <img
           onClick={handleNext}
-          className="absolute top-[50%] right-4 bg-white rounded-full p-2"
+          className="absolute sm:hidden top-[50%] right-4 bg-white rounded-full p-2"
           src={nextIcon}
           alt=""
         />
         <img
           onClick={handlePrevious}
-          className="absolute top-[50%] left-4 bg-white rounded-full p-2"
+          className="absolute sm:hidden top-[50%] left-4 bg-white rounded-full p-2"
           src={previous}
           alt=""
         />
+
+        <div className="py-6 flex justify-between px-8">
+          {shoes.map((shoe, index) => {
+            const { img, id } = shoe;
+            return (
+              <div key={index} onClick={() => switchShoe(id)}>
+                <img
+                  className="h-16 rounded-md hover:cursor-pointer hover:border-Orange sm:border-2"
+                  src={img.img1}
+                  alt=""
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="w-4/5 mx-auto mt-6">
+      <div className="w-4/5 sm:w-1/2 mx-auto sm:mt-6 sm:px-12">
         <h2 className="font-bold text-DarkGrayishBlue">SNEAKER COMPANY</h2>
         <h1 className="text-3xl font-bold my-2">
           Fall Limited Edition Sneakers
@@ -87,34 +112,36 @@ const Home = () => {
           the weather can offer.
         </p>
 
-        <div>
-          <div className="flex w-full justify-between py-3 my-3 place-items-center">
+        <div className="flex flex-col">
+          <div className="flex w-full justify-between py-2 my-2 place-items-center">
             <span className="font-bold text-2xl">${quantity * 125.0}</span>{" "}
             <span className="bg-black p-2 text-white">50%</span>{" "}
-            <span className="crossed-text"> $250.00</span>
+            <span className="crossed-text">${quantity * 250.0 || "250.00"}</span>
           </div>
 
-          <div className="flex w-full place-items-center mt-4 bg-LightGrayishBlue py-3 justify-between px-4">
-            <span>
-              <img onClick={decreaseQuantity} src={minus} alt="" />
-            </span>{" "}
-            <span>{quantity}</span>
-            <span>
-              <img
-                onClick={() => setQuantity((prev) => prev + 1)}
-                src={plus}
-                alt=""
-              />
-            </span>
-          </div>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex w-full place-items-center sm:mt-4 bg-LightGrayishBlue py-3 justify-between px-4">
+              <span>
+                <img onClick={decreaseQuantity} src={minus} alt="" />
+              </span>{" "}
+              <span>{quantity}</span>
+              <span>
+                <img
+                  onClick={() => setQuantity((prev) => prev + 1)}
+                  src={plus}
+                  alt=""
+                />
+              </span>
+            </div>
 
-          <button
-            onClick={handleAddToCart}
-            className="w-full flex justify-center space-x-8 rounded-lg mt-4 bg-Orange py-4"
-          >
-            <img src={cartIcon} alt="" />
-            <p>Add to cart</p>
-          </button>
+            <button
+              onClick={handleAddToCart}
+              className="w-full flex justify-center space-x-8 rounded-lg mt-4 bg-Orange hover:bg-PaleOrange font-bold py-4"
+            >
+              <img src={cartIcon} alt="" />
+              <p>Add to cart</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>
