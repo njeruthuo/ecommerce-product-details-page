@@ -5,7 +5,7 @@ import plus from "../images/icon-plus.svg";
 import minus from "../images/icon-minus.svg";
 import { useState } from "react";
 import { shoes } from "../utils/data";
-import useCart from "../utils/useCart";
+import { useCart } from "../utils/CartContext"; // updated import
 
 const Home = () => {
   const { setCart } = useCart();
@@ -49,7 +49,7 @@ const Home = () => {
           newCart[obj.id].quantity += quantity;
         } else {
           // Add the new item to the cart
-          newCart[obj.name] = { quantity, product: obj };
+          newCart[obj.id] = { quantity, product: obj };
         }
 
         return newCart;
@@ -58,9 +58,7 @@ const Home = () => {
   }
 
   function switchShoe(id) {
-    let img1 = shoes.find((shoe) => shoe.id === id)?.img?.img1;
-    console.log(img1);
-    return img1;
+    setNext(id); // Update the next state to the selected shoe's id
   }
 
   return (
@@ -84,7 +82,7 @@ const Home = () => {
           alt=""
         />
 
-        <div className="py-6 flex justify-between px-8">
+        <div className="py-6 sm:flex justify-between px-8 hidden">
           {shoes.map((shoe, index) => {
             const { img, id } = shoe;
             return (
@@ -116,10 +114,12 @@ const Home = () => {
           <div className="flex w-full justify-between py-2 my-2 place-items-center">
             <span className="font-bold text-2xl">${quantity * 125.0}</span>{" "}
             <span className="bg-black p-2 text-white">50%</span>{" "}
-            <span className="crossed-text">${quantity * 250.0 || "250.00"}</span>
+            <span className="crossed-text">
+              ${quantity * 250.0 || "250.00"}
+            </span>
           </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex flex-col gap-4 sm:flex-row mb-8 sm:mb-0">
             <div className="flex w-full place-items-center sm:mt-4 bg-LightGrayishBlue py-3 justify-between px-4">
               <span>
                 <img onClick={decreaseQuantity} src={minus} alt="" />
